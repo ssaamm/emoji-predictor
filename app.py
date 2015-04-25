@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, render_template, request, jsonify
 from elasticsearch import Elasticsearch
 import emoji, random, re, sqlite3, nltk
@@ -49,7 +51,10 @@ def suggest():
 
     # create suggestions
     category = classifier.classify(extract_features(message))
-    suggestions = emojiCategories[category]
+    if (message.find("poop") != -1) :
+       suggestions = [u'💩' for _ in range(1,random.randint(3, 10))] 
+    else:
+       suggestions = emojiCategories[category]
 
     return jsonify({'suggestions' : suggestions})
 
