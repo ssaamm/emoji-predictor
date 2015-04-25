@@ -5,6 +5,8 @@ import random
 import sqlite3
 import os
 import sys
+import csv
+import re
 
 def getEmojiCategories():
    emojiDict = {}
@@ -27,28 +29,47 @@ def getEmojiCategories():
 def word_freq(message):
    counts = {}
    for word in message.split(' '):
+      w = ''.join(ch for ch in word if ch.isalnum())
       try:
-         counts[word] += 1
+         counts[w] += 1
       except KeyError:
-         counts[word] = 1
+         counts[w] = 1
 
    return counts
 
 
 if __name__ == '__main__':
-
-#   reload(sys)
-#   sys.setdefaultencoding('utf-8')
+   '''
+   reload(sys)
+   sys.setdefaultencoding('utf-8')
 
    emojiCategories = getEmojiCategories();
-
+   '''
    db = sqlite3.connect('data.db')
    cursor = db.cursor()
    cursor.execute("SELECT text FROM message")
    rows = cursor.fetchall()
 
    messages = [row[0] for row in rows]
+   
+   with open('wordFreq.csv', 'w') as csvfile:
+      fieldnames = ['werd', 'freq']
+      writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+      writer.writeheader()
 
+      words = {}
+      for message in messages:
+         for word in message.split():
+            try:
+               words[word] += 1
+            except KeyError:
+               words[word] = 1
+      for (k, v) in words.iteritems():
+         try:
+            writer.writerow({'werd': k, 'freq': v})
+         except UnicodeEncodeError:
+            pass
+'''
 #   print emojiCategories
    labeled_messages = {}
    for msg in messages:
@@ -63,9 +84,6 @@ if __name__ == '__main__':
                
                labeled_messages[msg] = category
                break
-         else:
-            hi = 4
-            #print "emoji not found"
 
    db.close()
 
@@ -92,4 +110,4 @@ if __name__ == '__main__':
    # 6. (optional) gather statistics 
    print "Accuracy: %f" % (nltk.classify.accuracy(classifier, test_set))
    print (classifier.show_most_informative_features(50))
-
+'''
