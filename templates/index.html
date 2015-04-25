@@ -1,10 +1,23 @@
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Emoji Predictor</title>
-        <link href="static/style.css" rel="stylesheet" type="text/css">
-        <script src="static/jquery-2.1.3.min.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Emoji Suggester</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/main.css" rel="stylesheet">
+    <link href="static/style.css" rel="stylesheet">
+
+    <!-- Fonts from Google Fonts -->
+	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
         <script>
-            var cTimeDiffMillis = 250;
+            var cTimeDiffMillis = 100;
 
             function inputHandler(inputEvent) {
                 if (Date.now() - inputHandler.lastFired > cTimeDiffMillis) {
@@ -15,7 +28,7 @@
                         $.each(r["suggestions"], function (indexInArray, emoji) {
                             var div = $("<div>", { class: "suggestion" }).text(emoji);
                             div.click(function() {
-                                $("#message").val($("#message").val() + emoji);
+                                $("#message").val($("#message").val() + " " + emoji);
                                 $("#message").focus();
                             });
                             $("#suggestions").append(div);
@@ -28,12 +41,25 @@
 
             inputHandler.lastFired = Date.now();
         </script>
-    </head>
-    <body>
-        <h1>Emoji Predictor</h1>
-        <form>
-            <input type="text" id="message" placeholder="Type your message" oninput="inputHandler(event);">
-        </form>
-        <div id="suggestions"></div>
-    </body>
+  </head>
+
+  <body>
+
+	<div id="headerwrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<h1>Get great emoji suggestions</h1>
+					  <div class="form-group">
+					    <input type="text" id="message" class="form-control" placeholder="Type a message" oninput="inputHandler(event);">
+					  </div>
+				</div><!-- /col-lg-6 -->
+			</div><!-- /row -->
+    <div id="suggestions"></div>
+		</div><!-- /container -->
+	</div><!-- /headerwrap -->
+
+	
+    <script src="static/jquery-2.1.3.min.js"></script>
+  </body>
 </html>
