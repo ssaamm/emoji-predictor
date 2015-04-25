@@ -1,6 +1,11 @@
+body {
+	background-color: #3498db;
+}
+
 .suggestion {
-    background-color: #e6e6e6;
-    margin: 1em;
+    background-color: white;
+    margin: 0.5em;
     padding: 1em;
     display: inline-block;
+    border-radius:3px;
 }
