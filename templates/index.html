@@ -1,0 +1,39 @@
+<html lang="en">
+    <head>
+        <title>Emoji Predictor</title>
+        <link href="static/style.css" rel="stylesheet" type="text/css">
+        <script src="static/jquery-2.1.3.min.js"></script>
+        <script>
+            var cTimeDiffMillis = 250;
+
+            function inputHandler(inputEvent) {
+                if (Date.now() - inputHandler.lastFired > cTimeDiffMillis) {
+                    var userInput = inputEvent.target.value;
+                    $.post("suggest", { message: userInput },  function(r) {
+                        $("#suggestions").empty();
+
+                        $.each(r["suggestions"], function (indexInArray, emoji) {
+                            var div = $("<div>", { class: "suggestion" }).text(emoji);
+                            div.click(function() {
+                                $("#message").val($("#message").val() + emoji);
+                                $("#message").focus();
+                            });
+                            $("#suggestions").append(div);
+                        });
+                    });
+
+                    inputHandler.lastFired = Date.now();
+                }
+            }
+
+            inputHandler.lastFired = Date.now();
+        </script>
+    </head>
+    <body>
+        <h1>Emoji Predictor</h1>
+        <form>
+            <input type="text" id="message" placeholder="Type your message" oninput="inputHandler(event);">
+        </form>
+        <div id="suggestions"></div>
+    </body>
+</html>
