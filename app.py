@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-from emojilist import emojis
 from elasticsearch import Elasticsearch
 import emoji, random, re
 
